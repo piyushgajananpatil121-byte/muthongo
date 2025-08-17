@@ -34,33 +34,19 @@ a { text-decoration:none; color:inherit; }
 .footer { margin-top:56px; background:#0f172a; color:#e2e8f0; padding:28px 0; }
 .footer a { color:#bfdbfe; }
 
-/* 🔹 Guru Section */
+/* 🔹 Guru Meme Section */
 .guru-section {
   text-align: center;
   margin: 40px 0;
-  position: relative;
 }
 
 .guru-box {
-  position: relative;
   display: inline-block;
 }
 
 .guru-img {
-  width: 300px;
+  width: 320px;
   border-radius: 16px;
   border: 2px solid #e5e7eb;
 }
 
-.guru-text {
-  position: absolute;
-  top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(37, 99, 235, 0.9);
-  color: white;
-  padding: 8px 14px;
-  border-radius: 10px;
-  font-weight: bold;
-  font-size: 18px;
-}
