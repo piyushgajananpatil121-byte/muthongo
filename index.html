@@ -1,57 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Muthongo</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- 🔴 Hero Section -->
-  <header class="hero">
-    <img src="anup-sir.png" alt="Anup Sir" class="hero-img">
-    <h1 class="hero-text">Xhud Gae Guru</h1>
+  <!-- Header -->
+  <header>
+    <div class="logo">Muthongo</div>
+    <nav>
+      <a href="#hero">Home</a>
+      <a href="#courses">Courses</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#footer">Contact</a>
+    </nav>
   </header>
 
-  <!-- 🔴 Navigation Bar -->
-  <nav class="navbar">
-    <ul>
-      <li><a href="#courses">Courses</a></li>
-      <li><a href="#notes">Notes</a></li>
-      <li><a href="#tests">Tests</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+  <!-- Banner -->
+  <div class="top-banner">
+    <img src="anup-sir.png" alt="Anup Sir">
+    <div class="banner-text">Welcome to Muthongo</div>
+  </div>
 
-  <!-- 🔴 Courses Section -->
-  <section id="courses" class="section">
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <h2>Learn From The Best</h2>
+    <p>Personalized learning paths with expert guidance</p>
+  </section>
+
+  <!-- Courses -->
+  <section class="courses" id="courses">
     <h2>Our Courses</h2>
-    <p>Rank boosting content, lectures, and problem-solving sessions crafted for toppers.</p>
+    <div class="course-list">
+      <a href="neet.html" class="course">NEET</a>
+      <a href="jee.html" class="course">JEE</a>
+      <a href="clat.html" class="course">CLAT</a>
+      <a href="upsc.html" class="course">UPSC</a>
+    </div>
   </section>
 
-  <!-- 🔴 Notes Section -->
-  <section id="notes" class="section alt">
-    <h2>Free Notes</h2>
-    <p>Concise notes for Physics, Chemistry & Mathematics. Prepared by toppers, for toppers.</p>
+  <!-- Testimonials -->
+  <section class="testimonials" id="testimonials">
+    <h2>What Students Say</h2>
+    <div class="testimonial">
+      "Muthongo helped me crack NEET with confidence!"
+      <span>- Student A</span>
+    </div>
+    <div class="testimonial">
+      "Anup Sir's teaching style is unique and effective."
+      <span>- Student B</span>
+    </div>
   </section>
 
-  <!-- 🔴 Tests Section -->
-  <section id="tests" class="section">
-    <h2>Mock Tests</h2>
-    <p>All India test series with detailed solutions. Compete with thousands of aspirants.</p>
-  </section>
-
-  <!-- 🔴 Contact Section -->
-  <section id="contact" class="section alt">
-    <h2>Contact Us</h2>
-    <p>Email: support@muthongo.com</p>
-    <p>Phone: +91-9876543210</p>
-  </section>
-
-  <!-- 🔴 Footer -->
-  <footer class="footer">
-    <p>© 2025 Muthongo | Inspired by Mathongo</p>
+  <!-- Footer -->
+  <footer id="footer">
+    <div class="footer-links">
+      <a href="#hero">Home</a>
+      <a href="#courses">Courses</a>
+      <a href="#testimonials">Testimonials</a>
+    </div>
+    <p>&copy; 2025 Muthongo. All rights reserved.</p>
   </footer>
 
 </body>
