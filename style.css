@@ -7,7 +7,35 @@
 
 body {
   background: #fff;
-  color: #333;
+  color: #222;
+  line-height: 1.6;
+}
+
+/* Banner */
+.top-banner {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.top-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.banner-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 0, 0, 0.8);
+  padding: 15px 25px;
+  border-radius: 8px;
+  color: white;
+  font-size: 26px;
+  font-weight: bold;
 }
 
 /* Header */
@@ -16,7 +44,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 15px 50px;
-  background: #1e3a8a;
+  background: #d90429;
   color: white;
 }
 
@@ -38,53 +66,106 @@ header nav a:hover {
 
 /* Hero */
 .hero {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 60px 80px;
+  text-align: center;
+  padding: 60px 20px;
+  background: #fff5f5;
 }
 
-.hero-left {
-  max-width: 50%;
+.hero h2 {
+  font-size: 32px;
+  color: #d90429;
 }
 
-.hero-left h1 {
-  font-size: 36px;
-  margin-bottom: 20px;
-  color: #1e3a8a;
-}
-
-.hero-left p {
+.hero p {
   font-size: 18px;
+  margin-top: 10px;
+}
+
+/* Courses */
+.courses {
+  padding: 50px 20px;
+  background: #ffeaea;
+  text-align: center;
+}
+
+.courses h2 {
   margin-bottom: 20px;
+  color: #d90429;
 }
 
-.hero-left button {
-  padding: 12px 25px;
-  background: #1e3a8a;
+.course-list {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.course {
+  background: white;
+  border: 2px solid #d90429;
+  padding: 20px;
+  border-radius: 8px;
+  width: 200px;
+  font-weight: bold;
+  color: #d90429;
+  transition: 0.3s;
+}
+
+.course:hover {
+  background: #d90429;
   color: white;
-  border: none;
+}
+
+/* Testimonials */
+.testimonials {
+  padding: 50px 20px;
+  text-align: center;
+  background: #fff;
+}
+
+.testimonials h2 {
+  margin-bottom: 20px;
+  color: #d90429;
+}
+
+.testimonial {
+  background: #ffeaea;
+  border-left: 5px solid #d90429;
+  padding: 15px;
+  margin: 15px auto;
+  width: 60%;
   border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
+  font-style: italic;
 }
 
-.hero-left button:hover {
-  background: #163372;
-}
-
-.hero-right img {
-  max-width: 380px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+.testimonial span {
+  display: block;
+  margin-top: 10px;
+  color: #333;
+  font-weight: bold;
 }
 
 /* Footer */
 footer {
   text-align: center;
   padding: 20px;
-  background: #f1f1f1;
-  margin-top: 50px;
+  background: #d90429;
+  color: white;
 }
+
+footer .footer-links {
+  margin-bottom: 10px;
+}
+
+footer .footer-links a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+footer .footer-links a:hover {
+  text-decoration: underline;
+}
+
 
 
