@@ -1,35 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Muthongo Test</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Muthongo Test Runner</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body class="test-body">
-
   <header class="test-header">
-    <div class="brand">
-      <span class="logo">Muthongo</span>
-      <span id="examLabel" class="muted"></span>
-    </div>
+    <div class="brand"><span class="logo">Muthongo</span> <span id="examLabel"></span></div>
     <div class="controls">
-      <button id="langBtn" class="btn ghost" title="Switch Language">EN / HI</button>
-      <div class="timer" id="timer">60:00</div>
+      <button id="langBtn" class="btn ghost">EN/HI</button>
+      <div id="timer" class="timer">--:--</div>
       <button id="submitBtn" class="btn danger">Submit</button>
     </div>
   </header>
 
   <main class="test-layout">
-    <!-- Left: Question + Options -->
     <section class="qpanel">
-      <div id="qTitle" class="qtitle">Question</div>
-      <div id="qText" class="qtext">Loading…</div>
+      <div id="qTitle" class="qtitle"></div>
+      <div id="qText" class="qtext"></div>
       <form id="options" class="options"></form>
 
       <div class="actions">
-        <button id="clearBtn" class="btn ghost">Clear Response</button>
-        <button id="markBtn" class="btn purple">Mark for Review</button>
+        <button id="clearBtn" class="btn ghost">Clear</button>
+        <button id="markBtn" class="btn purple">Mark</button>
       </div>
 
       <div class="nav">
@@ -38,7 +33,6 @@
       </div>
     </section>
 
-    <!-- Right: Palette -->
     <aside class="palette">
       <div class="legend">
         <span class="pill not-visited">Not visited</span>
@@ -47,19 +41,28 @@
         <span class="pill marked">Marked</span>
       </div>
       <div id="paletteGrid" class="grid"></div>
+
+      <div style="margin-top:12px;">
+        <label for="filterSelect">Filter:</label>
+        <select id="filterSelect">
+          <option value="all">All</option>
+          <option value="marked">Marked</option>
+          <option value="not-answered">Not answered</option>
+        </select>
+      </div>
     </aside>
   </main>
 
-  <!-- Result Modal -->
   <div id="resultModal" class="modal hidden">
     <div class="modal-card">
-      <h2>Test Summary</h2>
+      <h2>Summary</h2>
       <div id="summary"></div>
-      <button class="btn primary" onclick="location.href='index.html'">Go to Home</button>
+      <button class="btn primary" onclick="location.href='index.html'">Home</button>
     </div>
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
+
 
