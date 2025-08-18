@@ -1,59 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Muthongo — PYQs (2010–2025)</title>
+  <title>Muthongo — Past Papers</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="brand">Muthongo</div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="test.html">Tests</a>
-    </nav>
+  <header class="topbar">
+    <h1>Muthongo — Past Papers (Ready to Launch)</h1>
   </header>
 
   <main class="container">
-    <section class="top">
-      <img src="anup-sir.png" alt="Anup" class="square-img" />
-      <h1>PYQs — 2010 to 2025</h1>
-      <p>Choose exam and year below. All questions are paraphrased/generated for legal testing/demo. Replace with licensed content at any time.</p>
+    <section class="controls">
+      <label for="examSelect">Select Exam / Paper:</label>
+      <select id="examSelect"></select>
+
+      <button id="loadBtn">Load Questions</button>
+      <button id="downloadBtn">Download JSON</button>
     </section>
 
-    <section class="exam-select">
-      <label for="examSelect">Exam</label>
-      <select id="examSelect">
-        <option value="jee_main">JEE Mains</option>
-        <option value="jee_adv">JEE Advanced</option>
-        <option value="mhtcet">MHT-CET</option>
-      </select>
-
-      <label for="yearSelect">Year</label>
-      <select id="yearSelect">
-        <!-- populated by script -->
-      </select>
-
-      <button id="loadBtn" class="btn primary">Load Year's Tests</button>
-    </section>
-
-    <section id="preview" class="preview">
-      <h3>Year Preview</h3>
-      <p id="previewText">No test loaded yet. Click "Load Year's Tests".</p>
-      <div id="paperList"></div>
-    </section>
-
-    <section class="actions">
-      <a id="startTest" class="btn primary" href="#">Start Test (first paper)</a>
+    <section id="questionsArea" class="questions-area">
+      <p class="hint">Load an exam to see questions here.</p>
     </section>
   </main>
 
   <footer class="footer">
-    <p>© 2025 Muthongo — Demo archive (2010–2025)</p>
+    <small>Built for GitHub Pages — place your JSON files in <code>/questions/</code></small>
   </footer>
 
   <script src="script.js"></script>
 </body>
 </html>
-
