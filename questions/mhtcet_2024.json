@@ -1,1 +1,102 @@
+{
+  "exam": "MHT-CET 2024",
+  "questions": [
+    {
+      "id": 1,
+      "text": {
+        "en": "Find moles present in 11.2 L of an ideal gas at STP.",
+        "hi": "STP पर 11.2 L आदर्श गैस में उपस्थित मोलों की संख्या ज्ञात करें।"
+      },
+      "options": {
+        "en": ["0.25 mol", "0.5 mol", "1.0 mol", "2.0 mol"],
+        "hi": ["0.25 मोल", "0.5 मोल", "1.0 मोल", "2.0 मोल"]
+      },
+      "answer": 1
+    },
+    {
+      "id": 2,
+      "text": {
+        "en": "y = 2x + 3 cuts the y-axis at:",
+        "hi": "y = 2x + 3 y-अक्ष को किस बिंदु पर काटती है?"
+      },
+      "options": {
+        "en": ["(0, -3)", "(0, 2)", "(0, 3)", "(3, 0)"],
+        "hi": ["(0, -3)", "(0, 2)", "(0, 3)", "(3, 0)"]
+      },
+      "answer": 2
+    },
+    {
+      "id": 3,
+      "text": {
+        "en": "2 kg block with 10 N on frictionless track → acceleration:",
+        "hi": "घर्षण-रहित पथ पर 10 N बल वाले 2 kg खंड का त्वरण:"
+      },
+      "options": {
+        "en": ["2 m/s²", "5 m/s²", "10 m/s²", "0.2 m/s²"],
+        "hi": ["2 m/s²", "5 m/s²", "10 m/s²", "0.2 mि/से²"]
+      },
+      "answer": 1
+    },
+    {
+      "id": 4,
+      "text": {
+        "en": "Vertex of x²−4x+7 equals:",
+        "hi": "x²−4x+7 का शीर्ष है:"
+      },
+      "options": {
+        "en": ["(2, 3)", "(−2, 3)", "(2, −3)", "(0, 7)"],
+        "hi": ["(2, 3)", "(−2, 3)", "(2, −3)", "(0, 7)"]
+      },
+      "answer": 0
+    },
+    {
+      "id": 5,
+      "text": {
+        "en": "Identify the strong electrolyte:",
+        "hi": "प्रबल विद्युत अपघट्य पहचानें:"
+      },
+      "options": {
+        "en": ["Glucose", "Acetic acid", "Sodium chloride", "Ammonia"],
+        "hi": ["ग्लूकोज़", "एसीटिक अम्ल", "सोडियम क्लोराइड", "अमोनिया"]
+      },
+      "answer": 2
+    },
+    {
+      "id": 6,
+      "text": {
+        "en": "10th term of A.P. (3, 5, 7, …) is:",
+        "hi": "ए.पी. (3, 5, 7, …) का 10वाँ पद है:"
+      },
+      "options": {
+        "en": ["19", "20", "21", "22"],
+        "hi": ["19", "20", "21", "22"]
+      },
+      "answer": 2
+    },
+    {
+      "id": 7,
+      "text": {
+        "en": "Boiling point rises with:",
+        "hi": "क्वथनांक किससे बढ़ता है?"
+      },
+      "options": {
+        "en": ["Lower pressure", "Higher pressure", "Higher altitude", "Weaker forces"],
+        "hi": ["कम दाब", "अधिक दाब", "अधिक ऊँचाई", "कमज़ोर बल"]
+      },
+      "answer": 1
+    },
+    {
+      "id": 8,
+      "text": {
+        "en": "Value of ∫₀¹ 2x dx is:",
+        "hi": "∫₀¹ 2x dx का मान:"
+      },
+      "options": {
+        "en": ["0", "1", "2", "3"],
+        "hi": ["0", "1", "2", "3"]
+      },
+      "answer": 1
+    }
+  ]
+}
 
