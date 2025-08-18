@@ -1,1 +1,46 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Muthongo Admin — Preview</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Admin — Paste JSON to preview</h2>
+    <textarea id="jsonInput" style="width:100%;height:300px;"></textarea>
+    <div style="margin-top:8px">
+      <button id="previewBtn">Preview</button>
+      <button id="saveBtn">Download JSON (for upload)</button>
+    </div>
+    <section id="previewArea" class="questions-area"></section>
+  </div>
+  <script>
+    const previewBtn = document.getElementById('previewBtn');
+    const jsonInput = document.getElementById('jsonInput');
+    const previewArea = document.getElementById('previewArea');
+
+    previewBtn.onclick = ()=>{
+      try{
+        const arr = JSON.parse(jsonInput.value);
+        if(!Array.isArray(arr)) { previewArea.innerHTML = '<p class="hint">JSON must be an array of questions</p>'; return; }
+        previewArea.innerHTML = '<h3>Preview</h3>';
+        arr.slice(0,200).forEach((q,i)=>{
+          const d = document.createElement('div'); d.className='qcard';
+          d.innerHTML = `<div class="qmeta">#${i+1}</div><div class="qtext">${q.question || '[no text]'}</div>`;
+          if(Array.isArray(q.options)) q.options.forEach(o=>{ const ch=document.createElement('div'); ch.className='choice'; ch.textContent=o; d.appendChild(ch); });
+          previewArea.appendChild(d);
+        });
+      }catch(e){
+        previewArea.innerHTML = `<p class="hint">Invalid JSON: ${e.message}</p>`;
+      }
+    };
+
+    document.getElementById('saveBtn').onclick = ()=>{
+      const blob = new Blob([jsonInput.value], {type:'application/json'});
+      const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='questions_preview.json'; a.click(); a.remove();
+    };
+  </script>
+</body>
+</html>
 
