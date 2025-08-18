@@ -1,237 +1,249 @@
-// ==== URL + Exam Label ====
-const params = new URLSearchParams(location.search);
-const examFile = params.get("exam"); // e.g., jee_main_2024
-const examMap = {
-  jee_main_2024: "JEE Mains 2024",
-  jee_adv_2024: "JEE Advanced 2024",
-  mhtcet_2024: "MHT-CET 2024",
-};
+/* script.js
+ - Handles: index dropdown population (from manifest), loading paper list,
+   launching test.html with proper query params.
+ - On test.html: loads questions JSON, runs timer, marking, palette, language toggle,
+   score calc, autosave to localStorage.
+*/
 
-const examLabel = document.getElementById("examLabel");
-if (examLabel && examFile && examMap[examFile]) {
-  examLabel.textContent = "• " + examMap[examFile];
-}
+/* ------------------- Utility ------------------- */
+const $ = id => document.getElementById(id);
+const q = sel => document.querySelector(sel);
 
-// ==== Global State ====
-let QUESTIONS = [];            // loaded from JSON
-let order = [];                // shuffled index order
-let current = 0;               // pointer in order
-let lang = "en";               // "en" or "hi"
-let answers = [];              // selected option index or null
-let marked = [];               // boolean
-let visited = [];              // boolean
-let timerSec = 60 * 60;        // 60 minutes
-let timerId = null;
+function fetchJSON(path){ return fetch(path).then(r=>{ if(!r.ok) throw new Error('Fetch failed '+path); return r.json(); }); }
+function shuffle(arr){ return arr.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]); }
+function formatTime(s){ const m = Math.floor(s/60).toString().padStart(2,'0'); const ss = (s%60).toString().padStart(2,'0'); return `${m}:${ss}`; }
 
-// ==== DOM ====
-const qTitle = document.getElementById("qTitle");
-const qText = document.getElementById("qText");
-const optionsForm = document.getElementById("options");
-const paletteGrid = document.getElementById("paletteGrid");
+/* ------------------- Index Page Logic ------------------- */
+if (document.body && document.querySelector('.exam-select')) {
+  const examSelect = $('examSelect');
+  const yearSelect = $('yearSelect');
+  const loadBtn = $('loadBtn');
+  const previewText = $('previewText');
+  const paperList = $('paperList');
+  const startTest = $('startTest');
 
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
-const clearBtn = document.getElementById("clearBtn");
-const markBtn = document.getElementById("markBtn");
-const langBtn = document.getElementById("langBtn");
-const submitBtn = document.getElementById("submitBtn");
-
-const timerEl = document.getElementById("timer");
-const resultModal = document.getElementById("resultModal");
-const summaryEl = document.getElementById("summary");
-
-// ==== Helpers ====
-const shuffle = (arr) => arr.map(v => [Math.random(), v])
-  .sort((a,b)=>a[0]-b[0]).map(x => x[1]);
-
-function formatTime(s){
-  const m = Math.floor(s/60).toString().padStart(2,"0");
-  const ss = (s%60).toString().padStart(2,"0");
-  return `${m}:${ss}`;
-}
-
-function startTimer(){
-  timerEl.textContent = formatTime(timerSec);
-  timerId = setInterval(()=>{
-    timerSec--;
-    timerEl.textContent = formatTime(timerSec);
-    if (timerSec <= 0){
-      clearInterval(timerId);
-      finishTest();
+  async function loadManifestFor(examKey){
+    const manifestPath = `questions/${examKey}_manifest.json`;
+    try {
+      const manifest = await fetchJSON(manifestPath);
+      return manifest; // { exam:..., years: [2010,2011,...], files: { "2010":"jee_main_2010.json" } }
+    } catch(e){
+      console.error(e);
+      return null;
     }
-  },1000);
-}
+  }
 
-function loadQuestion(idxInOrder){
-  const qIndex = order[idxInOrder];
-  const q = QUESTIONS[qIndex];
-
-  qTitle.textContent = `Question ${idxInOrder+1}`;
-  qText.textContent = q.text[lang];
-
-  // build options
-  optionsForm.innerHTML = "";
-  q.options[lang].forEach((opt, i)=>{
-    const id = `opt${i}`;
-    const label = document.createElement("label");
-    label.setAttribute("for", id);
-    const input = document.createElement("input");
-    input.type = "radio";
-    input.name = "opt";
-    input.id = id;
-    input.value = i;
-    if (answers[qIndex] === i) input.checked = true;
-    input.addEventListener("change", ()=>{
-      answers[qIndex] = i;
-      updatePaletteBtn(qIndex);
+  async function populateYears(){
+    const examKey = examSelect.value;
+    const manifest = await loadManifestFor(examKey);
+    yearSelect.innerHTML = '';
+    if (!manifest || !manifest.years) {
+      yearSelect.innerHTML = `<option value="">No years</option>`;
+      return;
+    }
+    manifest.years.forEach(y=>{
+      const opt = document.createElement('option');
+      opt.value = y;
+      opt.textContent = y;
+      yearSelect.appendChild(opt);
     });
+  }
 
-    label.appendChild(input);
-    label.appendChild(document.createTextNode(opt));
-    optionsForm.appendChild(label);
+  examSelect.addEventListener('change', populateYears);
+  populateYears();
+
+  loadBtn.addEventListener('click', async ()=>{
+    const examKey = examSelect.value;
+    const year = yearSelect.value;
+    if (!year) { previewText.textContent = 'Select a year first.'; return; }
+    const manifest = await loadManifestFor(examKey);
+    if (!manifest) { previewText.textContent = 'No manifest found'; return; }
+    const fileKey = `${examKey}_${year}.json`;
+    if (!manifest.files || !manifest.files[fileKey]) {
+      previewText.textContent = 'No file for selected year';
+      paperList.innerHTML = '';
+      startTest.href = '#';
+      return;
+    }
+    previewText.textContent = `Loaded ${examKey} — ${year}`;
+    // show basic info and first few questions preview
+    try {
+      const data = await fetchJSON(`questions/${fileKey}`);
+      paperList.innerHTML = `<p>Questions in file: ${data.questions.length}</p>`;
+      const ul = document.createElement('ul');
+      data.questions.slice(0,6).forEach(q=>{
+        const li = document.createElement('li');
+        li.textContent = q.text.en;
+        ul.appendChild(li);
+      });
+      paperList.appendChild(ul);
+      startTest.href = `test.html?exam=${examKey}&year=${year}&file=${fileKey}`;
+    } catch(e){
+      previewText.textContent = 'Failed to load questions JSON (check path)';
+      console.error(e);
+    }
   });
 
-  visited[qIndex] = true;
-  updatePaletteBtn(qIndex);
-  highlightCurrent(idxInOrder);
+  // open the first available test quickly
+  startTest.addEventListener('click', (ev)=>{
+    if (startTest.href === '#' || !startTest.href) { ev.preventDefault(); alert('Load a year first'); }
+  });
 }
 
-function highlightCurrent(idxInOrder){
-  // remove previous current
-  const all = paletteGrid.querySelectorAll(".qbtn");
-  all.forEach(btn => btn.classList.remove("current"));
-  // add current
-  const currentBtn = document.getElementById(`qbtn-${order[idxInOrder]}`);
-  if (currentBtn) currentBtn.classList.add("current");
-}
+/* ------------------- Test Page Logic ------------------- */
+if (document.body && document.querySelector('.test-layout')) {
+  // query params
+  const params = new URLSearchParams(location.search);
+  const examKey = params.get('exam');   // jee_main
+  const year = params.get('year');      // 2018
+  const file = params.get('file');      // optional explicit filename
 
-function updatePaletteBtn(qIndex){
-  const btn = document.getElementById(`qbtn-${qIndex}`);
-  if (!btn) return;
+  const examLabel = $('examLabel');
+  if (examLabel) examLabel.textContent = (examKey ? `• ${examKey.replace('_',' ').toUpperCase()}` : '');
 
-  // reset classes
-  btn.className = "qbtn";
-  if (!visited[qIndex]) {
-    btn.classList.add("not-visited");
-    return;
+  const qTitle = $('qTitle'), qText = $('qText'), optionsForm = $('options');
+  const paletteGrid = $('paletteGrid');
+  const prevBtn = $('prevBtn'), nextBtn = $('nextBtn'), clearBtn = $('clearBtn'), markBtn = $('markBtn');
+  const langBtn = $('langBtn'), submitBtn = $('submitBtn');
+  const timerEl = $('timer');
+  const resultModal = $('resultModal'), summaryEl = $('summary');
+
+  let QUESTIONS = [], order = [], current = 0, lang = 'en', answers = [], marked = [], visited = [];
+  let timerSec = 60 * 60, timerId = null; // default 60min
+
+  function buildPalette(){
+    paletteGrid.innerHTML = '';
+    for(let i=0;i<QUESTIONS.length;i++){
+      const btn = document.createElement('button');
+      btn.className = 'qbtn not-visited';
+      btn.id = `qbtn-${i}`;
+      btn.textContent = i+1;
+      btn.addEventListener('click', ()=> {
+        current = order.indexOf(i);
+        loadQuestion(current);
+      });
+      paletteGrid.appendChild(btn);
+    }
   }
-  if (marked[qIndex]) {
-    btn.classList.add("marked");
-  } else if (answers[qIndex] == null) {
-    btn.classList.add("not-answered");
-  } else {
-    btn.classList.add("answered");
-  }
-}
 
-function buildPalette(n){
-  paletteGrid.innerHTML = "";
-  for (let i=0;i<n;i++){
-    const realIndex = i; // index into QUESTIONS
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.id = `qbtn-${realIndex}`;
-    btn.className = "qbtn not-visited";
-    btn.textContent = (order.indexOf(realIndex)+1); // palette shows current numbering
-    btn.addEventListener("click", ()=>{
-      current = order.indexOf(realIndex);
+  function updatePaletteBtn(realIndex){
+    const btn = $(`qbtn-${realIndex}`);
+    if (!btn) return;
+    btn.className = 'qbtn';
+    if (!visited[realIndex]) { btn.classList.add('not-visited'); return; }
+    if (marked[realIndex]) { btn.classList.add('marked'); return; }
+    if (answers[realIndex] == null) btn.classList.add('not-answered'); else btn.classList.add('answered');
+  }
+
+  function highlightCurrent(idxInOrder){
+    const all = paletteGrid.querySelectorAll('.qbtn'); all.forEach(b=>b.classList.remove('current'));
+    const realIndex = order[idxInOrder];
+    const btn = $(`qbtn-${realIndex}`); if (btn) btn.classList.add('current');
+  }
+
+  function loadQuestion(idxInOrder){
+    if (idxInOrder < 0 || idxInOrder >= order.length) return;
+    const real = order[idxInOrder];
+    const q = QUESTIONS[real];
+    qTitle.textContent = `Question ${idxInOrder+1}`;
+    qText.textContent = q.text[lang];
+    optionsForm.innerHTML = '';
+    q.options[lang].forEach((opt,i)=>{
+      const id = `opt-${real}-${i}`;
+      const label = document.createElement('label');
+      const input = document.createElement('input');
+      input.type='radio'; input.name='opt'; input.value=i; input.id=id;
+      if (answers[real] === i) input.checked = true;
+      input.addEventListener('change', ()=> { answers[real] = i; updatePaletteBtn(real); autosave(); });
+      label.appendChild(input);
+      label.appendChild(document.createTextNode(opt));
+      optionsForm.appendChild(label);
+    });
+    visited[real] = true;
+    updatePaletteBtn(real);
+    highlightCurrent(idxInOrder);
+  }
+
+  function clearResponse(){ const real = order[current]; answers[real]=null; const radios = optionsForm.querySelectorAll('input[type=radio]'); radios.forEach(r=>r.checked=false); updatePaletteBtn(real); autosave(); }
+  function toggleMark(){ const real = order[current]; marked[real] = !marked[real]; markBtn.textContent = marked[real] ? 'Unmark' : 'Mark'; updatePaletteBtn(real); autosave(); }
+  function nextQ(){ if (current < order.length-1){ current++; loadQuestion(current); } }
+  function prevQ(){ if (current > 0){ current--; loadQuestion(current); } }
+  function switchLang(){ lang = (lang==='en'?'hi':'en'); loadQuestion(current); autosave(); }
+  function startTimer(){ timerEl.textContent = formatTime(timerSec); timerId = setInterval(()=>{ timerSec--; timerEl.textContent = formatTime(timerSec); if(timerSec<=0){ clearInterval(timerId); finishTest(); } },1000); }
+
+  function finishTest(){
+    // scoring +4/-1
+    let correct=0, wrong=0, unattempted=0;
+    for(let i=0;i<QUESTIONS.length;i++){
+      if (answers[i] == null) { unattempted++; continue; }
+      if (Number(answers[i]) === Number(QUESTIONS[i].answer)) correct++; else wrong++;
+    }
+    const score = correct*4 - wrong;
+    summaryEl.innerHTML = `
+      <p><strong>Total:</strong> ${QUESTIONS.length}</p>
+      <p><strong>Answered:</strong> ${QUESTIONS.length - unattempted}</p>
+      <p><strong>Correct:</strong> ${correct}</p>
+      <p><strong>Wrong:</strong> ${wrong}</p>
+      <p><strong>Unattempted:</strong> ${unattempted}</p>
+      <p><strong>Score:</strong> ${score}</p>
+    `;
+    resultModal.classList.remove('hidden');
+    autosave(true); // clear or keep as done
+  }
+
+  function autosave(final=false){
+    try {
+      const key = `muthongo_${examKey}_${year}`;
+      const payload = { answers, marked, visited, order, current, lang, timerSec, final };
+      localStorage.setItem(key, JSON.stringify(payload));
+    } catch(e){ console.warn('autosave failed', e); }
+  }
+
+  // wire buttons
+  if (prevBtn) prevBtn.addEventListener('click', prevQ);
+  if (nextBtn) nextBtn.addEventListener('click', ()=>{ /* save & next */ autosave(); nextQ(); });
+  if (clearBtn) clearBtn.addEventListener('click', clearResponse);
+  if (markBtn) markBtn.addEventListener('click', toggleMark);
+  if (langBtn) langBtn.addEventListener('click', switchLang);
+  if (submitBtn) submitBtn.addEventListener('click', ()=>{ if(confirm('Submit test?')){ clearInterval(timerId); finishTest(); }});
+
+  // boot: load file (either explicit file param or manifest mapping)
+  (async function boot(){
+    try {
+      let fileToLoad = file || `${examKey}_${year}.json`;
+      // try fetch
+      const data = await fetchJSON(`questions/${fileToLoad}`);
+      // adopt duration from meta if present
+      if (data.meta && data.meta.duration_min) timerSec = data.meta.duration_min * 60;
+      QUESTIONS = data.questions;
+      // prepare arrays
+      const n = QUESTIONS.length;
+      answers = Array(n).fill(null);
+      marked = Array(n).fill(false);
+      visited = Array(n).fill(false);
+      // shuffled numbering for attempt
+      order = shuffle([...Array(n).keys()]);
+      buildPalette();
+      // try resume from localStorage
+      const saved = localStorage.getItem(`muthongo_${examKey}_${year}`);
+      if (saved){
+        const s = JSON.parse(saved);
+        if (!s.final){
+          // restore some state
+          answers = s.answers || answers;
+          marked = s.marked || marked;
+          visited = s.visited || visited;
+          order = s.order || order;
+          current = s.current || 0;
+          lang = s.lang || lang;
+          timerSec = s.timerSec || timerSec;
+        }
+      }
       loadQuestion(current);
-    });
-    paletteGrid.appendChild(btn);
-  }
+      startTimer();
+    } catch(e){
+      alert('Failed to load test JSON; ensure file exists: ' + e.message);
+    }
+  })();
 }
 
-function clearResponse(){
-  const qIndex = order[current];
-  answers[qIndex] = null;
-  // uncheck radios
-  const radios = optionsForm.querySelectorAll('input[type="radio"]');
-  radios.forEach(r => r.checked = false);
-  updatePaletteBtn(qIndex);
-}
-
-function toggleMark(){
-  const qIndex = order[current];
-  marked[qIndex] = !marked[qIndex];
-  updatePaletteBtn(qIndex);
-  markBtn.textContent = marked[qIndex] ? "Unmark" : "Mark for Review";
-}
-
-function next(){
-  if (current < order.length-1){
-    current++;
-    loadQuestion(current);
-  }
-}
-
-function prev(){
-  if (current > 0){
-    current--;
-    loadQuestion(current);
-  }
-}
-
-function switchLanguage(){
-  lang = (lang === "en") ? "hi" : "en";
-  loadQuestion(current);
-}
-
-function finishTest(){
-  // Calculate score: +4 correct, -1 incorrect, 0 unattempted
-  let correct=0, wrong=0, unattempted=0;
-  QUESTIONS.forEach((q, i)=>{
-    if (answers[i] == null) { unattempted++; return; }
-    if (Number(answers[i]) === Number(q.answer)) correct++;
-    else wrong++;
-  });
-  const score = correct*4 - wrong*1;
-
-  summaryEl.innerHTML = `
-    <p><strong>Total Questions:</strong> ${QUESTIONS.length}</p>
-    <p><strong>Answered:</strong> ${QUESTIONS.length - unattempted}</p>
-    <p><strong>Correct:</strong> ${correct}</p>
-    <p><strong>Wrong:</strong> ${wrong}</p>
-    <p><strong>Unattempted:</strong> ${unattempted}</p>
-    <p><strong>Score (JEE scheme +4/−1):</strong> ${score}</p>
-  `;
-  resultModal.classList.remove("hidden");
-}
-
-// ==== Wire Up Buttons (only if on test page) ====
-if (prevBtn) prevBtn.addEventListener("click", prev);
-if (nextBtn) nextBtn.addEventListener("click", next);
-if (clearBtn) clearBtn.addEventListener("click", clearResponse);
-if (markBtn) markBtn.addEventListener("click", toggleMark);
-if (langBtn) langBtn.addEventListener("click", switchLanguage);
-if (submitBtn) submitBtn.addEventListener("click", ()=>{
-  if (confirm("Are you sure you want to submit the test?")) {
-    clearInterval(timerId);
-    finishTest();
-  }
-});
-
-// ==== Boot: Load Questions JSON ====
-(async function boot(){
-  if (!examFile) return; // on home page
-  try{
-    const resp = await fetch(`questions/${examFile}.json`);
-    const data = await resp.json();
-    QUESTIONS = data.questions;
-
-    // Init state arrays
-    const n = QUESTIONS.length;
-    answers = Array(n).fill(null);
-    marked  = Array(n).fill(false);
-    visited = Array(n).fill(false);
-
-    // shuffled order for numbering
-    order = shuffle([...Array(n).keys()]);
-
-    buildPalette(n);
-    loadQuestion(current);
-    startTimer();
-  }catch(e){
-    console.error("Failed to load questions:", e);
-    alert("Could not load test. Check JSON path/naming.");
-  }
-})();
