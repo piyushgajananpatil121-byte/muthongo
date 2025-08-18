@@ -1,73 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Muthongo • Practice Platform</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Muthongo — PYQs (2010–2025)</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-  <!-- Top Banner -->
-  <section class="top-banner">
-    <img src="anup-sir.png" alt="Anup Sir" class="square-img" />
-    <div class="banner-text">Prep Smarter with Muthongo 🚀</div>
-  </section>
-
-  <!-- Header -->
   <header class="site-header">
-    <div class="logo">Muthongo</div>
+    <div class="brand">Muthongo</div>
     <nav>
-      <a href="#jee-mains">JEE Mains</a>
-      <a href="#jee-advanced">JEE Advanced</a>
-      <a href="#mhtcet">MHT-CET</a>
+      <a href="index.html">Home</a>
+      <a href="test.html">Tests</a>
     </nav>
   </header>
 
-  <!-- Hero -->
-  <section class="hero">
-    <h1>Exam-like Practice. Clean UI. Zero Piracy.</h1>
-    <p>Same difficulty feel, original questions, bilingual. Numbering shuffles every time.</p>
-  </section>
+  <main class="container">
+    <section class="top">
+      <img src="anup-sir.png" alt="Anup" class="square-img" />
+      <h1>PYQs — 2010 to 2025</h1>
+      <p>Choose exam and year below. All questions are paraphrased/generated for legal testing/demo. Replace with licensed content at any time.</p>
+    </section>
 
-  <!-- Exams -->
-  <section class="exam-cards" id="jee-mains">
-    <h2>JEE Mains</h2>
-    <div class="card-grid">
-      <a class="card" href="test.html?exam=jee_main_2024">
-        <h3>Start Full Test</h3>
-        <p>Single-Correct MCQs • +4/−1 • 60 min</p>
-      </a>
-    </div>
-  </section>
+    <section class="exam-select">
+      <label for="examSelect">Exam</label>
+      <select id="examSelect">
+        <option value="jee_main">JEE Mains</option>
+        <option value="jee_adv">JEE Advanced</option>
+        <option value="mhtcet">MHT-CET</option>
+      </select>
 
-  <section class="exam-cards" id="jee-advanced">
-    <h2>JEE Advanced</h2>
-    <div class="card-grid">
-      <a class="card" href="test.html?exam=jee_adv_2024">
-        <h3>Start Full Test</h3>
-        <p>Single-Correct MCQs • +4/−1 • 60 min</p>
-      </a>
-    </div>
-  </section>
+      <label for="yearSelect">Year</label>
+      <select id="yearSelect">
+        <!-- populated by script -->
+      </select>
 
-  <section class="exam-cards" id="mhtcet">
-    <h2>MHT-CET</h2>
-    <div class="card-grid">
-      <a class="card" href="test.html?exam=mhtcet_2024">
-        <h3>Start Full Test</h3>
-        <p>Single-Correct MCQs • +4/−1 • 60 min</p>
-      </a>
-    </div>
-  </section>
+      <button id="loadBtn" class="btn primary">Load Year's Tests</button>
+    </section>
+
+    <section id="preview" class="preview">
+      <h3>Year Preview</h3>
+      <p id="previewText">No test loaded yet. Click "Load Year's Tests".</p>
+      <div id="paperList"></div>
+    </section>
+
+    <section class="actions">
+      <a id="startTest" class="btn primary" href="#">Start Test (first paper)</a>
+    </section>
+  </main>
 
   <footer class="footer">
-    <div class="footer-links">
-      <a href="#">About</a>
-      <a href="#">Contact</a>
-      <a href="#">Privacy</a>
-    </div>
-    <p>© 2025 Muthongo — Interface inspired by exam platforms. Questions are original.</p>
+    <p>© 2025 Muthongo — Demo archive (2010–2025)</p>
   </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
+
