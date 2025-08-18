@@ -1,11 +1,11 @@
 {
-  "exam": "JEE Main 2024",
+  "exam": "JEE Advanced 2024",
   "questions": [
     {
       "id": 1,
       "text": {
-        "en": "Find the number of moles when 11.2 L of an ideal gas is measured at STP.",
-        "hi": "STP पर 11.2 L आदर्श गैस में मोलों की संख्या ज्ञात करें।"
+        "en": "At STP, 11.2 L of an ideal gas corresponds to how many moles?",
+        "hi": "STP पर 11.2 L आदर्श गैस कितने मोल के बराबर होती है?"
       },
       "options": {
         "en": ["0.25 mol", "0.5 mol", "1.0 mol", "2.0 mol"],
@@ -16,32 +16,32 @@
     {
       "id": 2,
       "text": {
-        "en": "The graph of y = 2x + 3 intersects the y-axis at:",
-        "hi": "y = 2x + 3 का y-अक्ष पर प्रतिच्छेदन बिंदु है:"
+        "en": "Line y = 2x + 3 has y-intercept equal to:",
+        "hi": "रेखा y = 2x + 3 का y-अवरोधक (intercept) है:"
       },
       "options": {
-        "en": ["(0, -3)", "(0, 2)", "(0, 3)", "(3, 0)"],
-        "hi": ["(0, -3)", "(0, 2)", "(0, 3)", "(3, 0)"]
+        "en": ["−3", "2", "3", "0"],
+        "hi": ["−3", "2", "3", "0"]
       },
       "answer": 2
     },
     {
       "id": 3,
       "text": {
-        "en": "A 2 kg block is pulled with a horizontal force of 10 N on a frictionless surface. Acceleration is:",
-        "hi": "घर्षण-रहित सतह पर 2 kg ब्लॉक को 10 N क्षैतिज बल से खींचा जाता है। त्वरण होगा:"
+        "en": "A 2 kg mass pulled by 10 N on smooth surface acquires acceleration:",
+        "hi": "चिकनी सतह पर 10 N बल से खींचे गए 2 kg पिंड का त्वरण होगा:"
       },
       "options": {
         "en": ["2 m/s²", "5 m/s²", "10 m/s²", "0.2 m/s²"],
-        "hi": ["2 m/s²", "5 m/s²", "10 m/s²", "0.2 m/s²"]
+        "hi": ["2 m/s²", "5 m/s²", "10 m/s²", "0.2 मि/से²"]
       },
       "answer": 1
     },
     {
       "id": 4,
       "text": {
-        "en": "For the function f(x)=x²−4x+7, the vertex is at:",
-        "hi": "फलन f(x)=x²−4x+7 का शिखर कहाँ है?"
+        "en": "Vertex of parabola f(x)=x²−4x+7 is located at:",
+        "hi": "पराबोला f(x)=x²−4x+7 का शीर्ष स्थित है:"
       },
       "options": {
         "en": ["(2, 3)", "(−2, 3)", "(2, −3)", "(0, 7)"],
@@ -52,20 +52,20 @@
     {
       "id": 5,
       "text": {
-        "en": "Which of the following is a strong electrolyte?",
-        "hi": "निम्न में से कौन-सा एक प्रबल विद्युत अपघट्य है?"
+        "en": "Select the strong electrolyte:",
+        "hi": "प्रबल विद्युत अपघट्य चुनें:"
       },
       "options": {
-        "en": ["Glucose", "CH3COOH", "NaCl", "NH3"],
-        "hi": ["ग्लूकोज़", "CH3COOH", "NaCl", "NH3"]
+        "en": ["C6H12O6", "CH3COOH", "NaCl", "NH3"],
+        "hi": ["C6H12O6", "CH3COOH", "NaCl", "NH3"]
       },
       "answer": 2
     },
     {
       "id": 6,
       "text": {
-        "en": "If A.P. has first term 3 and common difference 2, then 10th term is:",
-        "hi": "यदि ए.पी. का प्रथम पद 3 और अंतर 2 है, तो 10वाँ पद होगा:"
+        "en": "10th term of A.P. with a1=3, d=2 equals:",
+        "hi": "a1=3, d=2 के साथ ए.पी. का 10वाँ पद है:"
       },
       "options": {
         "en": ["19", "20", "21", "22"],
@@ -76,20 +76,20 @@
     {
       "id": 7,
       "text": {
-        "en": "Boiling point increases with:",
-        "hi": "किसी द्रव का क्वथनांक बढ़ता है यदि:"
+        "en": "Boiling point typically rises when:",
+        "hi": "क्वथनांक सामान्यतः कब बढ़ता है?"
       },
       "options": {
-        "en": ["External pressure decreases", "External pressure increases", "Altitude increases", "Intermolecular forces decrease"],
-        "hi": ["बाह्य दाब घटे", "बाह्य दाब बढ़े", "ऊँचाई बढ़े", "अंतराअणुक बल घटें"]
+        "en": ["External pressure falls", "External pressure rises", "Altitude increases", "Intermolecular forces weaken"],
+        "hi": ["बाह्य दाब घटे", "बाह्य दाब बढ़े", "ऊँचाई बढ़े", "अंतराअणुक बल कम हों"]
       },
       "answer": 1
     },
     {
       "id": 8,
       "text": {
-        "en": "Evaluate ∫₀¹ 2x dx.",
-        "hi": "∫₀¹ 2x dx का मान निकालें।"
+        "en": "Compute the definite integral ∫₀¹ 2x dx.",
+        "hi": "परिभाषित समाकलन ∫₀¹ 2x dx का मान ज्ञात करें।"
       },
       "options": {
         "en": ["0", "1", "2", "3"],
@@ -99,4 +99,5 @@
     }
   ]
 }
+
 
